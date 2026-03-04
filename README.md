@@ -1,42 +1,121 @@
-# HADACA3 – Multi-Omics Cell-Type Deconvolution
+# Multi-Omics Cell-Type Deconvolution  
+### HADACA3 Data Science Challenge
 
-## Overview
+## Project Overview
 
-This repository contains my solution to the HADACA3 data challenge.
+This project presents a machine learning solution developed for the HADACA3 multi-omics challenge.
 
-The objective of the challenge is to estimate cell-type proportions from bulk RNA-seq and DNA methylation data using reference profiles.
+The objective is to estimate cell-type proportions from bulk RNA-seq and DNA methylation data using reference single-cell profiles.
 
-This project implements a multi-omics deconvolution pipeline combining constrained regression, feature selection, and supervised calibration.
+This is a real-world biomedical data science problem involving:
+- High-dimensional data
+- Multi-modal integration
+- Compositional constraints
+- Model calibration under competition settings
 
 Final leaderboard score: **0.86**
 
 ---
 
-## Methodology
+## Problem Statement
 
-The pipeline includes the following steps:
+Bulk tissue samples contain mixtures of different cell types.  
+The goal is to computationally infer the proportion of each cell type using:
 
-### 1. Feature Selection
-- Variance-based selection of informative genes and CpGs
-- RNA and methylation features selected independently
+- Gene expression (RNA-seq)
+- DNA methylation data
+- Reference cell-type profiles
 
-### 2. Deconvolution
-- Non-negative least squares (NNLS)
-- Enforces biologically valid constraints (non-negative proportions)
-- Column-wise normalization to ensure compositional validity
-
-### 3. Multi-Omics Fusion
-- Independent RNA and methylation deconvolution
-- Error-weighted fusion based on reconstruction error
-
-### 4. Supervised Calibration
-- CLR (Centered Log-Ratio) transformation
-- Ridge regression calibration
-- Improves compositional accuracy
-
-### 5. Final Normalization
-- Ensures proportions sum to 1 per sample
+This is a constrained regression and compositional learning problem.
 
 ---
 
-## Repository Structure
+## Methodology
+
+### 1. Feature Engineering
+- Variance-based feature selection
+- Independent selection for RNA and methylation
+- Dimensionality reduction while preserving biological signal
+
+### 2. Constrained Deconvolution
+- Non-Negative Least Squares (NNLS)
+- Ensures biologically valid proportions (no negative values)
+- Per-sample normalization to satisfy compositional constraints
+
+### 3. Multi-Omics Fusion
+- Independent RNA and methylation deconvolution
+- Error-based weighting of modalities
+- Adaptive fusion per sample
+
+### 4. Compositional Calibration
+- Centered Log-Ratio (CLR) transformation
+- Ridge regression calibration
+- Bias correction in compositional space
+- Improved Aitchison-based performance
+
+### 5. Model Optimization
+- Hyperparameter tuning
+- Stability analysis across datasets
+- Competition-driven optimization
+
+---
+
+## Technical Stack
+
+- Python
+- NumPy
+- Pandas
+- SciPy (NNLS)
+- Scikit-learn (Ridge Regression)
+- HDF5 data handling (h5py)
+
+---
+
+## Performance
+
+| Stage | Approach | Score |
+|-------|----------|-------|
+| Baseline | Linear Regression | 0.34 |
+| NNLS | Constrained Regression | 0.75 |
+| Multi-omics Fusion | RNA + Methylation | 0.80 |
+| Calibration | Ridge + CLR | **0.86** |
+
+Evaluation metrics included:
+- Aitchison distance (compositional metric)
+- RMSE
+- MAE
+- Median dataset aggregation
+
+---
+
+## Skills Demonstrated
+
+This project showcases the following Data Science skills:
+
+- Multi-omics data integration
+- High-dimensional regression
+- Constrained optimization
+- Compositional data analysis
+- Model calibration & stacking
+- Feature selection strategies
+- Performance optimization in competitive settings
+- Reproducible ML pipeline design
+
+---
+## Results
+
+The model achieved a leaderboard score of **0.86**, placing in the competitive range of submissions.
+
+Key performance strengths:
+- Robust multi-omics integration
+- Stable generalization across datasets
+- Strong compositional accuracy (Aitchison metric)
+
+---
+
+## Future Improvements
+
+- Ensemble calibration models
+- Advanced marker selection per cell type
+- Batch effect correction
+- Bayesian compositional modeling
